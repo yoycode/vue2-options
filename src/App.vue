@@ -13,16 +13,22 @@
     <v-main class="grey lighten-3">
       <v-container>
         <v-row>
-          <v-col cols="12" sm="2">
-            <v-sheet rounded="lg">여기에 태그</v-sheet>
+          <v-col cols="12" sm="3">
+            <v-list>
+              <v-list-item v-for="tag in users" :key="tag.id">
+                <v-list-item-avatar>
+                  <v-img :src="tag.picture"></v-img>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title>{{tag.firstName}}, {{tag.lastName}}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
           </v-col>
-          <v-col cols="12" sm="8">
+          <v-col cols="12" sm="9">
             <v-sheet v-for="item in list" :key="item.id" outlined>
               <Post :item="item" />
             </v-sheet>
-          </v-col>
-          <v-col cols="12" sm="2">
-            <v-sheet rounded="lg" min-height="268"></v-sheet>
           </v-col>
         </v-row>
       </v-container>
@@ -38,19 +44,32 @@ export default {
   },
   data: () => ({
     links: ["Dashboard", "Messages", "Profile", "Updates"],
-    list: []
+    list: [],
+    users: []
   }),
   created() {
     this.$axios
-      .get("https://dummyapi.io/data/v1/post", {
-        headers: { "app-id": process.env.VUE_APP_API_KEY }
-      })
-      .then(response => {
-        this.list = response.data.data;
-      })
-      .catch(error => {
-        console.error(error);
-      });
+      .all([
+        this.$axios.get("https://dummyapi.io/data/v1/post", {
+          headers: { "app-id": process.env.VUE_APP_API_KEY }
+        }),
+        this.$axios.get("https://dummyapi.io/data/v1/user", {
+          headers: { "app-id": process.env.VUE_APP_API_KEY }
+        })
+      ])
+      .then(
+        this.$axios.spread((post, user) => {
+          this.list = post.data.data;
+          this.users = user.data.data;
+          console.log(user); // tag에 관한 데이터
+        })
+      )
+      .catch(
+        this.$axios.spread((post_err, user_err) => {
+          console.error(post_err);
+          console.error(user_err);
+        })
+      );
   }
 };
 </script>

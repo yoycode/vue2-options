@@ -8,7 +8,10 @@
       </div>
       <div>🧡{{ item.likes }}</div>
     </div>
-    <div class="ml-auto">{{ item.owner.lastName }}, {{ item.owner.firstName }}</div>
+    <div
+      class="ml-auto"
+      style="white-space:nowrap"
+    >{{ item.owner.firstName }}, {{ item.owner.lastName }}</div>
   </div>
 </template>
 <script>
