@@ -61,7 +61,6 @@ export default {
         this.$axios.spread((post, user) => {
           this.list = post.data.data;
           this.users = user.data.data;
-          console.log(user); // tag에 관한 데이터
         })
       )
       .catch(

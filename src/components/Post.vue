@@ -6,7 +6,13 @@
       <div class="d-flex" style="gap:5px">
         <v-chip v-for="(tag, index) in item.tags" :key="index" small label>#{{tag}}</v-chip>
       </div>
-      <div>🧡{{ item.likes }}</div>
+      <div @click="like(item)" style="cursor:pointer;">
+        <span v-if="item.likes > 50">🧡</span>
+        <span v-else-if="item.likes > 20">💛</span>
+        <span v-else-if="item.likes > 10">💚</span>
+        <span v-else>💙</span>
+        <span>{{ item.likes }}</span>
+      </div>
     </div>
     <div
       class="ml-auto"
@@ -16,6 +22,22 @@
 </template>
 <script>
 export default {
-  props: ["item"]
+  props: ["item"],
+  methods: {
+    like(item) {
+      this.$axios
+        .put(
+          `https://dummyapi.io/data/v1/post/${item.id}`,
+          { likes: item.likes++ },
+          { headers: { "app-id": process.env.VUE_APP_API_KEY } }
+        )
+        .then(() => {
+          alert(`You like "${item.text}"`);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
+  }
 };
 </script>
