@@ -28,8 +28,17 @@
             </v-list>
           </v-col>
           <v-col cols="12" sm="9">
+            <v-chip
+              color="success"
+              small
+              label
+              close
+              @click:close="closeTag"
+              class="mb-2"
+              v-show="selectedTag"
+            >{{selectedTag}}</v-chip>
             <v-sheet v-for="item in list" :key="item.id" outlined>
-              <Post :item="item" />
+              <Post :item="item" @postByTag="list = $event" @selectedTag="selectedTag = $event" />
             </v-sheet>
           </v-col>
         </v-row>
@@ -48,7 +57,8 @@ export default {
     links: ["Dashboard", "Messages", "Profile", "Updates"],
     users: [],
     list: [],
-    selectedUser: ""
+    selectedUser: "",
+    selectedTag: ""
   }),
   created() {
     this.$axios
@@ -81,6 +91,19 @@ export default {
         })
         .then(response => {
           this.list = response.data.data;
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+    closeTag() {
+      this.$axios
+        .get("https://dummyapi.io/data/v1/post", {
+          headers: { "app-id": process.env.VUE_APP_API_KEY }
+        })
+        .then(response => {
+          this.list = response.data.data;
+          this.selectedTag = "";
         })
         .catch(error => {
           console.error(error);

@@ -4,15 +4,21 @@
     <div>
       <div>{{ item.text }}</div>
       <div class="d-flex" style="gap:5px">
-        <v-chip v-for="(tag, index) in item.tags" :key="index" small label>#{{tag}}</v-chip>
+        <v-chip
+          @click="postByTag(tag)"
+          v-for="(tag, index) in item.tags"
+          :key="index"
+          small
+          label
+        ># {{tag}}</v-chip>
       </div>
-      <div @click="like(item)" style="cursor:pointer;">
+      <span @click="like(item)" style="cursor:pointer;">
         <span v-if="item.likes > 50">🧡</span>
         <span v-else-if="item.likes > 20">💛</span>
         <span v-else-if="item.likes > 10">💚</span>
         <span v-else>💙</span>
         <span>{{ item.likes }}</span>
-      </div>
+      </span>
     </div>
     <div
       class="ml-auto"
@@ -23,6 +29,9 @@
 <script>
 export default {
   props: ["item"],
+  data() {
+    return {};
+  },
   methods: {
     like(item) {
       this.$axios
@@ -33,6 +42,19 @@ export default {
         )
         .then(() => {
           alert(`You like "${item.text}"`);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+    postByTag(tag) {
+      this.$emit("selectedTag", tag);
+      this.$axios
+        .get(`https://dummyapi.io/data/v1/tag/${tag}/post`, {
+          headers: { "app-id": process.env.VUE_APP_API_KEY }
+        })
+        .then(response => {
+          this.$emit("postByTag", response.data.data);
         })
         .catch(error => {
           console.error(error);
