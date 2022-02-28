@@ -2,7 +2,7 @@
   <div class="d-flex pa-2" style="gap:8px">
     <img :src="item.image" style="width:80px; height:80px;" />
     <div>
-      <div>{{ item.text }}</div>
+      <router-link to="/detail">{{ item.text }}</router-link>
       <div class="d-flex" style="gap:5px">
         <v-chip
           @click="postByTag(tag)"
