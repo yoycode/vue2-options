@@ -7,7 +7,12 @@ Vue.use(VueRouter);
 
 const route = [
   { path: "/", component: Main },
-  { path: "/detail", component: PostDetail },
+  {
+    path: "/detail/:id",
+    component: PostDetail,
+    name: 'detail',
+    props: true
+  },
 ];
 
 const router = new VueRouter({
@@ -16,3 +21,4 @@ const router = new VueRouter({
 });
 
 export default router;
+
