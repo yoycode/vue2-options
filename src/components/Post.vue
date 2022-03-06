@@ -1,9 +1,9 @@
 <template>
-  <div class="d-flex pa-2" style="gap:8px">
-    <img :src="item.image" style="width:80px; height:80px;" />
+  <div class="post-wrapper">
+    <img :src="item.image" class="post-thumbnail" />
     <div>
       <router-link :to="{name:'detail', params:{id: item.id}}">{{ item.text }}</router-link>
-      <div class="d-flex" style="gap:5px">
+      <div class="post-tags">
         <v-chip
           @click="postByTag(tag)"
           v-for="(tag, index) in item.tags"
@@ -12,7 +12,7 @@
           label
         ># {{tag}}</v-chip>
       </div>
-      <span @click="like(item)" style="cursor:pointer;">
+      <span @click="like(item)" class="post-like">
         <span v-if="item.likes > 50">🧡</span>
         <span v-else-if="item.likes > 20">💛</span>
         <span v-else-if="item.likes > 10">💚</span>
@@ -20,10 +20,10 @@
         <span>{{ item.likes }}</span>
       </span>
     </div>
-    <div
-      class="ml-auto"
-      style="white-space:nowrap"
-    >{{ item.owner.firstName }}, {{ item.owner.lastName }}</div>
+    <div class="post-owner">
+      <v-img :src="item.owner.picture" class="post-owner-img" />
+      <div>{{ item.owner.firstName }}, {{ item.owner.lastName }}</div>
+    </div>
   </div>
 </template>
 <script>
@@ -63,3 +63,35 @@ export default {
   }
 };
 </script>
+<style>
+.post-wrapper {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+}
+.post-thumbnail {
+  width: 80px;
+  height: 80px;
+}
+.post-tags {
+  display: flex;
+  gap: 5px;
+}
+.post-like {
+  display: flex;
+  gap: 10px;
+  cursor: pointer;
+}
+.post-owner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-left: auto;
+  white-space: nowrap;
+}
+.post-owner-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+</style>

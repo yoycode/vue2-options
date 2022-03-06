@@ -1,53 +1,43 @@
 <template>
   <v-row justify="center">
     <v-col cols="12" sm="9">
-      <v-sheet class="d-flex flex-column align-center pa-3">
-        <img :src="item.image" style="width:auto; height:50vh" />
-        <div class="d-flex justify-space-between" style="width:100%">
+      <div class="detail-container">
+        <img :src="item.image" class="detail-main-img" />
+        <div class="detail-content">
           <div>
             <h1>
               {{ item.text }}
               <v-chip v-if="comments.length > 0">{{comments.length}}</v-chip>
             </h1>
-            <div class="d-flex" style="gap:5px">
+            <div class="detail-tags">
               <v-chip v-for="(tag, index) in item.tags" :key="index" label>{{ tag }}</v-chip>
               <span>💖 {{ item.likes }}</span>
             </div>
-            <p class="mb-0">{{ dateFilter(item.publishDate) }}</p>
+            <p>{{ dateFilter(item.publishDate) }}</p>
             <a :href="item.link">{{item.link}}</a>
           </div>
-          <div class="d-flex mt-3" v-if="item.owner">
-            <img :src="item.owner.picture" class="mr-2" style="width:100px; height:100px;" />
+          <div class="detail-owner" v-if="item.owner">
+            <img :src="item.owner.picture" class="detail-owner-img" />
             <div>{{item.owner.firstName}}, {{item.owner.lastName}}</div>
           </div>
         </div>
-      </v-sheet>
-      <v-list class="mt-3" v-if="comments.length > 0">
-        <v-list-item-group>
-          <v-list-item v-for="(comment,idx) in comments" :key="comment.id">
-            <v-list-item-content>
-              <v-list-item-title>
-                <v-chip small label outlined class="mr-2">{{idx}}</v-chip>
-                <span>{{ comment.message }}</span>
-              </v-list-item-title>
-            </v-list-item-content>
-            <div class="d-flex justify-end">
-              <v-list-item-avatar>
-                <v-img :src="comment.owner.picture"></v-img>
-              </v-list-item-avatar>
+      </div>
 
-              <v-list-item-content>
-                <v-list-item-title class="d-flex">
-                  <div class="d-flex flex-column align-end">
-                    <span>{{comment.owner.title}}.{{comment.owner.firstName}}, {{comment.owner.lastName}}</span>
-                    <span>{{ dateFilter(comment.publishDate) }}</span>
-                  </div>
-                </v-list-item-title>
-              </v-list-item-content>
+      <div class="comment-wrapper" v-if="comments.length > 0">
+        <div v-for="(comment,idx) in comments" :key="comment.id" class="comment">
+          <div class="comment-content">
+            <v-chip small label outlined>{{idx}}</v-chip>
+            <span>{{ comment.message }}</span>
+          </div>
+          <div class="comment-info">
+            <v-img :src="comment.owner.picture" class="comment-img" />
+            <div class="comment-name">
+              <span>{{comment.owner.title}}.{{comment.owner.firstName}}, {{comment.owner.lastName}}</span>
+              <span>{{ dateFilter(comment.publishDate) }}</span>
             </div>
-          </v-list-item>
-        </v-list-item-group>
-      </v-list>
+          </div>
+        </div>
+      </div>
     </v-col>
   </v-row>
 </template>
@@ -90,3 +80,59 @@ export default {
   }
 };
 </script>
+<style>
+.detail-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.detail-main-img {
+  width: auto;
+  height: 50vh;
+}
+.detail-content {
+  display: flex;
+  width: 100%;
+}
+.detail-tags {
+  display: flex;
+  gap: 5px;
+}
+.detail-owner {
+  display: flex;
+  margin-top: 20px;
+}
+.detail-owner-img {
+  width: 100px;
+  height: 100px;
+}
+
+.comment-wrapper {
+  margin-top: 12px;
+  width: 100%;
+}
+.comment {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+.comment-content {
+  display: flex;
+}
+.comment-info {
+  display: flex;
+  justify-content: "flex-end";
+}
+.comment-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+.comment-name {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+</style>

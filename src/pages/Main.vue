@@ -1,18 +1,10 @@
 <template>
   <v-row>
     <v-col cols="12" sm="3">
-      <v-list>
-        <v-list-item-group>
-          <v-list-item v-for="user in users" :key="user.id" @click="postByUser(user)">
-            <v-list-item-avatar>
-              <v-img :src="user.picture"></v-img>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-title>{{user.firstName}}, {{user.lastName}}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-item-group>
-      </v-list>
+      <div v-for="user in users" :key="user.id" @click="postByUser(user)" class="user-wrapper">
+        <img :src="user.picture" class="user-img" />
+        <div>{{user.firstName}}, {{user.lastName}}</div>
+      </div>
     </v-col>
     <v-col cols="12" sm="9">
       <v-chip
@@ -96,3 +88,15 @@ export default {
   }
 };
 </script>
+<style>
+.user-wrapper {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+.user-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+</style>
