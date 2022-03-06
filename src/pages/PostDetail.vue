@@ -10,7 +10,7 @@
               <v-chip v-if="comments.length > 0">{{comments.length}}</v-chip>
             </h1>
             <div class="detail-tags">
-              <v-chip v-for="(tag, index) in item.tags" :key="index" label>{{ tag }}</v-chip>
+              <v-chip v-for="(tag, index) in item.tags" :key="index">{{ tag }}</v-chip>
               <span>💖 {{ item.likes }}</span>
             </div>
             <p>{{ dateFilter(item.publishDate) }}</p>
@@ -26,7 +26,7 @@
       <div class="comment-wrapper" v-if="comments.length > 0">
         <div v-for="(comment,idx) in comments" :key="comment.id" class="comment">
           <div class="comment-content">
-            <v-chip small label outlined>{{idx}}</v-chip>
+            <v-chip>{{idx}}</v-chip>
             <span>{{ comment.message }}</span>
           </div>
           <div class="comment-info">
